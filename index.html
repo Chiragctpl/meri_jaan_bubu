@@ -74,13 +74,6 @@
 
     <div class="envelope" id="envelope"></div>
     
-    <div class="video-container" id="videoContainer">
-        <video controls autoplay>
-            <source src="bbvideo.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-
     <audio id="birthdaySong" src="audio1.mp3"></audio>
 
     <script>
@@ -110,10 +103,11 @@
 
             countdownElement.classList.remove('show');
 
-            await showMessage('hindiMessage', 5000);
-
+            // Audio now plays immediately after countdown ends
             const audio = document.getElementById('birthdaySong');
             audio.play();
+
+            await showMessage('hindiMessage', 5000);
 
             const finalMessage = document.querySelector('.final-message');
             finalMessage.classList.add('show');
