@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubu's Special Countdown</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            position: relative;
+        }
+
+        .message {
+            position: absolute;
+            font-size: 2.5rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .fancy-text {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 4rem;
+            color: #ff66b2;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ff66b2, 0 0 20px #ff33a1; }
+            to { text-shadow: 0 0 20px #ff33a1, 0 0 40px #ff66b2; }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #countdown {
+            font-size: 5rem;
+            font-weight: bold;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            background: url('https://media.giphy.com/media/3ohs7KViFQl3o1PqAw/giphy.gif');
+            background-size: cover;
+            z-index: 1;
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="confetti"></div>
+    
+    <div id="message1" class="message">Since I'm missing you soooooooooooooooooooooo much, this is a love packet for my BUBU. - by Chirag</div>
+    <div id="message2" class="message hidden">And the person is...</div>
+    <div id="message3" class="message hidden">My Bubu ❤️</div>
+    <div id="message4" class="message hidden">And the special day when my Bubu came into our lives is coming soon...</div>
+    <div id="countdown" class="hidden"></div>
+    <div id="message5" class="message hidden">
+        उस दिन खुदा ने भी जश्न मनाया होगा,<br>
+        जिस दिन आपको अपने हाथों से बनाया होगा,<br>
+        उसने भी बहाये होंगे आंसू,<br>
+        जिस दिन आपको धरती पर भेज कर,<br>
+        खुद को अकेला पाया होगा।
+    </div>
+    <div id="finalMessage" class="message fancy-text hidden">Can't keep calm, it's my Bubu's birthday!</div>
+
+    <audio id="celebrationAudio" src="audio1.mp3"></audio>
+
+    <script>
+        const messages = [
+            "message1",
+            "message2",
+            "message3",
+            "message4",
+            "countdown",
+            "message5",
+            "finalMessage"
+        ];
+
+        function showNextMessage(index) {
+            if (index > 0) document.getElementById(messages[index - 1]).classList.add('hidden');
+            document.getElementById(messages[index]).classList.remove('hidden');
+
+            if (index === 4) startCountdown();
+            else if (index === 5) document.getElementById('celebrationAudio').play();
+
+            if (index < messages.length - 1) {
+                setTimeout(() => showNextMessage(index + 1), index === 3 ? 5000 : 2000);
+            }
+        }
+
+        function startCountdown() {
+            let countdownValue = 17;
+            const countdownElement = document.getElementById('countdown');
+
+            const countdownInterval = setInterval(() => {
+                countdownElement.innerHTML = countdownValue + " days to go";
+                countdownValue--;
+
+                if (countdownValue < 0) {
+                    clearInterval(countdownInterval);
+                    showNextMessage(5);
+                }
+            }, 250);
+        }
+
+        // Background Image Rotation
+        const backgrounds = ["image1.png", "image2.png", "image3.png", "image4.png", "image5.png"];
+        let bgIndex = 0;
+
+        function rotateBackgrounds() {
+            const backgroundElement = document.createElement('div');
+            backgroundElement.className = 'background';
+            backgroundElement.style.backgroundImage = `url(${backgrounds[bgIndex]})`;
+            document.body.appendChild(backgroundElement);
+
+            bgIndex = (bgIndex + 1) % backgrounds.length;
+            setTimeout(() => {
+                backgroundElement.remove();
+                rotateBackgrounds();
+            }, 4000);
+        }
+
+        // Start the sequence
+        window.onload = () => {
+            showNextMessage(0);
+            rotateBackgrounds();
+        };
+    </script>
+</body>
+</html>
