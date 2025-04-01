@@ -61,6 +61,7 @@
 <body>
     <div class="confetti"></div>
 
+    <div class="message" id="I LOVE YOU BUBU</div>
     <div class="message" id="message1">Once upon a time, god sent his prettiest creation on earth, and this special person is the brightest star of my life, my love, my best friend</div>
     <div class="message" id="message2">...and the person is</div>
     <div class="message" id="message3">My Bubu!</div>
@@ -94,7 +95,7 @@
             const countdownElement = document.getElementById('countdown');
             countdownElement.classList.add('show');
 
-            for (let i = 17; i >= 0; i--) {
+            for (let i = 14; i >= 0; i--) {
                 countdownElement.innerHTML = `${i} days to go`;
                 await new Promise(resolve => setTimeout(resolve, 250));
             }
