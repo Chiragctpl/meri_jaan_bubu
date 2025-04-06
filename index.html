@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Bubu's Birthday Surprise</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             background-color: black;
             overflow: hidden;
             color: pink;
@@ -20,8 +17,10 @@
         }
         .message, .countdown, .final-message {
             position: absolute;
+            width: 100%;
+            top: 40%;
             display: none;
-            font-size: 3rem;
+            font-size: 2rem;
             z-index: 2;
             text-shadow: 2px 2px 10px #ff00ff;
         }
@@ -38,8 +37,11 @@
         }
         .envelope {
             position: absolute;
+            top: 50%;
+            left: 50%;
             width: 200px;
             height: 200px;
+            transform: translate(-50%, -50%);
             background: url('envelope.png') no-repeat center;
             background-size: contain;
             z-index: 3;
@@ -50,6 +52,8 @@
             position: absolute;
             width: 60%;
             height: 60%;
+            top: 20%;
+            left: 20%;
             z-index: 3;
         }
         video {
@@ -61,26 +65,40 @@
 <body>
     <div class="confetti"></div>
 
-    <div class="message" id="message1">I LOVE YOU BUBU</div>
     <div class="message" id="message1">Once upon a time, god sent his prettiest creation on earth, and this special person is the brightest star of my life, my love, my best friend</div>
     <div class="message" id="message2">...and the person is</div>
     <div class="message" id="message3">My Bubu!</div>
     <div class="message" id="message4">...and the special day when my Bubu came in our lives is coming soon!</div>
-
     <div class="countdown" id="countdown"></div>
 
-   <div class="final-message">Can't keep calm, it's my Bubu's birthday!</div>
+    <div class="message" id="hindiMessage">
+        उस दिन खुदा ने भी जश्न मनाया होगा,<br>
+        जिस दिन आपको अपने हाथों से बनाया होगा,<br>
+        उसने भी बहाये होंगे आंसू,<br>
+        जिस दिन आपको धरती पर भेज कर,<br>
+        खुद को अकेला पाया होगा।
+    </div>
+
+    <div class="final-message">Can't keep calm, it's my Bubu's birthday!</div>
 
     <div class="envelope" id="envelope"></div>
-    
+
+    <div class="video-container" id="videoContainer">
+        <video controls autoplay>
+            <source src="bbvideo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
     <audio id="birthdaySong" src="audio1.mp3"></audio>
 
     <script>
         function showMessage(id, duration) {
             return new Promise(resolve => {
-                document.getElementById(id).classList.add('show');
+                const el = document.getElementById(id);
+                el.classList.add('show');
                 setTimeout(() => {
-                    document.getElementById(id).classList.remove('show');
+                    el.classList.remove('show');
                     resolve();
                 }, duration);
             });
@@ -102,9 +120,11 @@
 
             countdownElement.classList.remove('show');
 
-            // Audio now plays immediately after countdown ends
+            // Play audio
             const audio = document.getElementById('birthdaySong');
-            audio.play();
+            audio.play().catch(error => {
+                console.log('Audio play failed:', error);
+            });
 
             await showMessage('hindiMessage', 5000);
 
