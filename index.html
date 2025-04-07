@@ -3,86 +3,108 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bubu's Birthday Surprise</title>
+  <title>Happiest Birthday Week Bubu</title>
   <style>
-    @keyframes dance {
-      0% { transform: rotate(-5deg); }
-      50% { transform: rotate(5deg); }
-      100% { transform: rotate(-5deg); }
-    }
-
     body {
       margin: 0;
       padding: 0;
-      height: 100vh;
       background-color: black;
-      overflow: hidden;
       color: pink;
       font-family: 'Arial', sans-serif;
+      overflow: hidden;
       text-align: center;
     }
 
-    .message, .countdown, .final-message, .birthday-week, .final-image {
-      position: absolute;
-      width: 100%;
-      top: 40%;
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('confetti12.gif') repeat;
+      background-size: cover;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    .message, .countdown, .final-message, .love-note {
+      position: fixed;
+      width: 90%;
+      left: 5%;
+      top: 30%;
       display: none;
       font-size: 2rem;
       z-index: 2;
       text-shadow: 2px 2px 10px #ff00ff;
     }
 
-    .birthday-week {
-      font-size: 3.5rem;
-      color: #ff66cc;
-      animation: dance 0.5s infinite;
-      text-shadow: 2px 2px 12px #ff66cc;
-    }
-
-    .final-image {
-      top: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .final-image img {
-      max-width: 80vw;
-      max-height: 80vh;
-      border: 4px solid pink;
-      border-radius: 12px;
-      box-shadow: 0 0 30px hotpink;
+    .countdown {
+      font-size: 2.5rem;
     }
 
     .show {
       display: block;
     }
 
-    .confetti {
-      position: absolute;
-      width: 100vw;
-      height: 100vh;
-      background: url('confetti12.gif') repeat;
-      background-size: cover;
+    .big-message {
+      font-size: 3rem;
+      animation: dance 1s infinite alternate;
+      color: #ff99cc;
+      text-shadow: 0 0 20px #ff66cc;
+    }
+
+    @keyframes dance {
+      0% { transform: scale(1) rotate(-2deg); }
+      100% { transform: scale(1.05) rotate(2deg); }
+    }
+
+    .image-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
       z-index: 1;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: auto;
+      max-height: 100vh;
+      object-fit: contain;
+    }
+
+    .love-note {
+      bottom: 10%;
+      left: 0;
+      width: 100%;
+      font-size: 2rem;
+      color: #ff69b4;
+      text-shadow: 2px 2px 10px #fff;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <div class="confetti"></div>
 
-  <div class="message" id="message1">
-    Once upon a time, god sent his prettiest creation on earth, and this special person is the brightest star of my life, my love, my best friend
-  </div>
+  <div class="message" id="message1">Once upon a time, god sent his prettiest creation on earth, and this special person is the brightest star of my life, my love, my best friend</div>
   <div class="message" id="message2">...and the person is</div>
   <div class="message" id="message3">My Bubu!</div>
   <div class="message" id="message4">...and the special day when my Bubu came in our lives is coming soon!</div>
   <div class="countdown" id="countdown"></div>
+  <div class="final-message big-message" id="finalMessage">Happiest Birthday Week Bubu 🎉</div>
 
-  <div class="birthday-week" id="birthdayWeekMessage">Happiest Birthday Week Bubu</div>
-
-  <div class="final-image" id="finalImage">
-    <img src="image5.jpg" alt="Love Image" />
+  <div class="image-container" id="imageContainer">
+    <img src="image5.jpg" alt="Love Image for Bubu" />
+    <div class="love-note">I love you Bubu ❤️</div>
   </div>
 
   <script>
@@ -113,13 +135,17 @@
 
       countdownElement.classList.remove('show');
 
-      const birthdayMsg = document.getElementById('birthdayWeekMessage');
-      birthdayMsg.classList.add('show');
+      // Show final birthday message
+      const finalMsg = document.getElementById('finalMessage');
+      finalMsg.classList.add('show');
 
-      // Show the image after short delay
-      setTimeout(() => {
-        document.getElementById('finalImage').classList.add('show');
-      }, 2000); // Wait 2 seconds before showing image
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      finalMsg.classList.remove('show');
+
+      // Show love image
+      const imageContainer = document.getElementById('imageContainer');
+      imageContainer.style.display = 'block';
     }
 
     window.onload = startCelebration;
