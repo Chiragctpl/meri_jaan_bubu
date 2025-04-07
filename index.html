@@ -1,134 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Bubu's Birthday Surprise</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background-color: black;
-            overflow: hidden;
-            color: pink;
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-        }
-        .message, .countdown, .final-message {
-            position: absolute;
-            width: 100%;
-            top: 40%;
-            display: none;
-            font-size: 2rem;
-            z-index: 2;
-            text-shadow: 2px 2px 10px #ff00ff;
-        }
-        .show {
-            display: block;
-        }
-        .confetti {
-            position: absolute;
-            width: 100vw;
-            height: 100vh;
-            background: url('confetti12.gif') repeat;
-            background-size: cover;
-            z-index: 1;
-        }
-        .envelope {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 200px;
-            height: 200px;
-            transform: translate(-50%, -50%);
-            background: url('envelope.png') no-repeat center;
-            background-size: contain;
-            z-index: 3;
-            display: none;
-        }
-        .video-container {
-            display: none;
-            position: absolute;
-            width: 60%;
-            height: 60%;
-            top: 20%;
-            left: 20%;
-            z-index: 3;
-        }
-        video {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bubu's Birthday Surprise</title>
+  <style>
+    @keyframes dance {
+      0% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+      100% { transform: rotate(-5deg); }
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: black;
+      overflow: hidden;
+      color: pink;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+    }
+
+    .message, .countdown, .final-message, .birthday-week {
+      position: absolute;
+      width: 100%;
+      top: 40%;
+      display: none;
+      font-size: 2rem;
+      z-index: 2;
+      text-shadow: 2px 2px 10px #ff00ff;
+    }
+
+    .birthday-week {
+      font-size: 3.5rem;
+      color: #ff66cc;
+      animation: dance 0.5s infinite;
+      text-shadow: 2px 2px 12px #ff66cc;
+    }
+
+    .show {
+      display: block;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      background: url('confetti12.gif') repeat;
+      background-size: cover;
+      z-index: 1;
+    }
+  </style>
 </head>
 <body>
-    <div class="confetti"></div>
+  <div class="confetti"></div>
 
-    <div class="message" id="message1">Once upon a time, god sent his prettiest creation on earth, and this special person is the brightest star of my life, my love, my best friend</div>
-    <div class="message" id="message2">...and the person is</div>
-    <div class="message" id="message3">My Bubu!</div>
-    <div class="message" id="message4">...and the special day when my Bubu came in our lives is coming soon!</div>
-    <div class="countdown" id="countdown"></div>
+  <div class="message" id="message1">
+    Once upon a time, god sent his prettiest creation on earth, and this special person is the brightest star of my life, my love, my best friend
+  </div>
+  <div class="message" id="message2">...and the person is</div>
+  <div class="message" id="message3">My Bubu!</div>
+  <div class="message" id="message4">...and the special day when my Bubu came in our lives is coming soon!</div>
+  <div class="countdown" id="countdown"></div>
+  <div class="birthday-week" id="birthdayWeekMessage">Happiest Birthday Week Bubu</div>
 
+  <script>
+    function showMessage(id, duration) {
+      return new Promise(resolve => {
+        const el = document.getElementById(id);
+        el.classList.add('show');
+        setTimeout(() => {
+          el.classList.remove('show');
+          resolve();
+        }, duration);
+      });
+    }
 
+    async function startCelebration() {
+      await showMessage('message1', 5000);
+      await showMessage('message2', 2000);
+      await showMessage('message3', 2000);
+      await showMessage('message4', 3000);
 
-    <div class="final-message">Can't keep calm, it's my Bubu's birthday!</div>
+      const countdownElement = document.getElementById('countdown');
+      countdownElement.classList.add('show');
 
-    <div class="envelope" id="envelope"></div>
+      for (let i = 8; i >= 0; i--) {
+        countdownElement.innerHTML = `${i} days to go`;
+        await new Promise(resolve => setTimeout(resolve, 250));
+      }
 
+      countdownElement.classList.remove('show');
 
-    <audio id="birthdaySong" src="audio1.mp3"></audio>
+      const birthdayMsg = document.getElementById('birthdayWeekMessage');
+      birthdayMsg.classList.add('show');
+    }
 
-    <script>
-        function showMessage(id, duration) {
-            return new Promise(resolve => {
-                const el = document.getElementById(id);
-                el.classList.add('show');
-                setTimeout(() => {
-                    el.classList.remove('show');
-                    resolve();
-                }, duration);
-            });
-        }
-
-        async function startCelebration() {
-            await showMessage('message1', 5000);
-            await showMessage('message2', 2000);
-            await showMessage('message3', 2000);
-            await showMessage('message4', 3000);
-
-            const countdownElement = document.getElementById('countdown');
-            countdownElement.classList.add('show');
-
-            for (let i = 8; i >= 0; i--) {
-                countdownElement.innerHTML = `${i} days to go`;
-                await new Promise(resolve => setTimeout(resolve, 250));
-            }
-
-            countdownElement.classList.remove('show');
-
-            // Play audio
-            const audio = document.getElementById('birthdaySong');
-            audio.play().catch(error => {
-                console.log('Audio play failed:', error);
-            });
-
-            await showMessage('hindiMessage', 5000);
-
-            const finalMessage = document.querySelector('.final-message');
-            finalMessage.classList.add('show');
-
-            const envelope = document.getElementById('envelope');
-            envelope.classList.add('show');
-
-            setTimeout(() => {
-                envelope.classList.remove('show');
-                document.getElementById('videoContainer').classList.add('show');
-            }, 3000);
-        }
-
-        window.onload = startCelebration;
-    </script>
+    window.onload = startCelebration;
+  </script>
 </body>
 </html>
